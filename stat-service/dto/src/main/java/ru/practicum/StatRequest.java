@@ -1,22 +1,22 @@
 package ru.practicum;
 
-import com.fasterxml.jackson.annotation.JsonFormat; // Импорт аннотации для форматирования JSON
-import com.fasterxml.jackson.annotation.JsonProperty; // Импорт аннотации для задания имени свойства в JSON
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder; // Импорт аннотации для генерации паттерна Builder
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder // Генерация паттерна Builder для создания объектов класса
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatRequest {
-    private int id; // Идентификатор запроса (может быть сгенерирован на сервере)
+    private int id;
 
     @NotNull
     @NotBlank
@@ -27,10 +27,10 @@ public class StatRequest {
 
     @NotNull
     @NotBlank
-    private String ip; // IP-адрес клиента, отправившего запрос
+    private String ip;
 
     @NotNull
-    @JsonProperty("timestamp") // Указание имени свойства в JSON
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Форматирование временной метки
-    private LocalDateTime timestamp; // Временная метка запроса
+    @JsonProperty("timestamp")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
 }
