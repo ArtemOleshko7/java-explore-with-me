@@ -11,6 +11,20 @@
 	</parent>
 
 	<name>Explore With Me</name>
+	<modules>
+		<module>stat-service</module>
+		<module>main-service</module>
+	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+	</dependencies>
 
 	<groupId>ru.practicum</groupId>
 	<artifactId>explore-with-me</artifactId>
@@ -18,7 +32,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>23</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -63,7 +77,7 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.8.5.0</version>
+					<version>4.8.6.6</version>
 					<configuration>
 						<effort>Max</effort>
 						<threshold>High</threshold>
