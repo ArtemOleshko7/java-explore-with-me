@@ -13,28 +13,20 @@
     <artifactId>client</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <maven.compiler.source>23</maven.compiler.source> <!-- Укажите вашу версию JDK -->
-        <maven.compiler.target>23</maven.compiler.target> <!-- Укажите вашу версию JDK -->
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.4.4</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>3.4.4</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-            <version>3.4.4</version>
         </dependency>
 
         <dependency>
