@@ -15,7 +15,7 @@ public class ViewStatsMapper implements RowMapper<ViewStats> {
         return ViewStats.builder()
                 .app(rs.getString("app"))
                 .uri(rs.getString("uri"))
-                .hits(rs.getLong("hits"))
+                .hits((int) rs.getLong("hits"))
                 .build();
     }
 }
