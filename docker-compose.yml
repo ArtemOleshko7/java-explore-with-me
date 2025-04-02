@@ -84,4 +84,4 @@ services:
       interval: 10s
       timeout: 5s
       start_period: 10s
-      retries: 5ORD=password
+      retries: 5
