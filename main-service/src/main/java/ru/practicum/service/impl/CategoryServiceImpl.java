@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.CategoryDto;
 import ru.practicum.dto.NewCategoryDto;
 import ru.practicum.exceptions.ConflictException;
@@ -18,7 +19,6 @@ import ru.practicum.service.CategoryService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -26,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
 
-
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> getCategories(Integer from, Integer size) {
         log.info("Обработка запроса на получение категорий с фильтром c {} и {} по страницы)", from, size);
         PageRequest pageRequest = PageRequest.of(from / size, size);
@@ -38,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Long id) {
         Category category = checkIsCategoryExist(id);
         log.info("Найдена категория - {}", category);
@@ -45,6 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto addNewCategory(NewCategoryDto newCategoryDto) {
         log.info("Добавление новой категории");
         Category category = CategoryMapper.map(newCategoryDto);
@@ -54,6 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategoryById(Long id) {
         log.info("Удаление категории с id = {}", id);
         Category category = checkIsCategoryExist(id);
@@ -66,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDto updateCategory(Long id, CategoryDto category) {
         log.info("Обновление категории с id = {}, новая категория = {}", id, category);
         Category oldCategory = checkIsCategoryExist(id);

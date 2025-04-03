@@ -3,6 +3,7 @@ package ru.practicum.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.ParticipationRequestDto;
 import ru.practicum.exceptions.ConflictException;
 import ru.practicum.exceptions.IncorrectParametersException;
@@ -34,6 +35,7 @@ public class RequestServiceImpl implements RequestService {
     private static final String REJECTED = "Действие отклонено.";
 
     @Override
+    @Transactional
     public ParticipationRequestDto addNewRequest(Long userId, Long eventId) {
         User user = checkUser(userId);
 
@@ -62,6 +64,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> getRequestsByUserId(Long userId) {
         checkUser(userId);
         List<Request> result = requestRepository.findAllByRequesterId(userId);
@@ -69,12 +72,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
         checkUser(userId);
         Request request = requestRepository.findByIdAndRequesterId(requestId, userId).orElseThrow(
                 () -> new NotFoundException(REJECTED, "Запрос с id= " + requestId + " не найден"));
         if (request.getStatus().equals(RequestStatus.CANCELED) || request.getStatus().equals(RequestStatus.REJECTED)) {
-            throw new IncorrectParametersException("Запос отклонен", "Передан не корректный статус запроса: {} " + request.getStatus());
+            throw new IncorrectParametersException("Запрос отклонен", "Передан не корректный статус запроса: {} " + request.getStatus());
         }
         request.setStatus(RequestStatus.CANCELED);
         Request requestAfterSave = requestRepository.save(request);

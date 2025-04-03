@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.StatsClient;
 import ru.practicum.ViewStats;
 import ru.practicum.dto.*;
@@ -53,6 +54,7 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventFullDto> getAllEventFromAdmin(SearchEventParamsAdmin searchEventParamsAdmin) {
         PageRequest pageable = PageRequest.of(searchEventParamsAdmin.getFrom() / searchEventParamsAdmin.getSize(),
                 searchEventParamsAdmin.getSize());
@@ -98,6 +100,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateEventFromAdmin(Long eventId, UpdateEventAdminRequest requestUpdate) {
         Event oldEvent = checkEvent(eventId);
         if (oldEvent.getEventStatus().equals(EventStatus.PUBLISHED) || oldEvent.getEventStatus().equals(EventStatus.CANCELED)) {
@@ -139,6 +142,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> getEventsByUserId(Long userId, Integer from, Integer size) {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("Пользователь не найдее.", "Пользователь с id= " + userId + " не найден");
@@ -149,6 +153,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto addNewEvent(Long userId, NewEventDto newEventDto) {
         log.info("Добавление нового события {}", newEventDto);
         LocalDateTime createdTime = LocalDateTime.now();
@@ -174,6 +179,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
         checkUser(userId);
         Event event = checkEvenByInitiatorAndEventId(userId, eventId);
@@ -181,6 +187,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, UpdateEventUserRequest requestUpdate) {
         log.info("Обновление события с id= {} ", eventId);
         checkUser(userId);
@@ -226,6 +233,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public List<ParticipationRequestDto> getAllParticipationRequestsFromEventByOwner(Long userId, Long eventId) {
         checkUser(userId);
         checkEvenByInitiatorAndEventId(userId, eventId);
@@ -234,6 +242,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventRequestStatusUpdateResponse updateStatusRequest(Long userId, Long eventId, EventRequestStatusUpdateRequest requestUpdate) {
         checkUser(userId);
         Event event = checkEvenByInitiatorAndEventId(userId, eventId);
@@ -291,6 +300,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> getAllEventFromPublic(SearchEventParams searchEventParams, HttpServletRequest request) {
         if (searchEventParams.getRangeEnd() != null && searchEventParams.getRangeStart() != null) {
             if (searchEventParams.getRangeEnd().isBefore(searchEventParams.getRangeStart())) {
@@ -351,6 +361,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventFullDto getEventById(Long eventId, HttpServletRequest request) {
         Event event = checkEvent(eventId);
         if (!event.getEventStatus().equals(EventStatus.PUBLISHED)) {

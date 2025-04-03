@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.constants.PaginationConstants;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,8 +32,8 @@ public class SearchEventParamsAdmin {
 
     @PositiveOrZero
     @Builder.Default
-    private Integer from = 0;
+    private Integer from = PaginationConstants.DEFAULT_FROM;
     @Positive
     @Builder.Default
-    private Integer size = 10;
+    private Integer size = PaginationConstants.DEFAULT_SIZE;
 }
