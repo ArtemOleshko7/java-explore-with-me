@@ -45,6 +45,7 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.map(commentRepository.save(commentMapper.map(newCommentDto, event, user)));
     }
 
+    @Transactional
     @Override
     public CommentDto updateByUser(Long userId, Long commentId, @Valid NewCommentDto newCommentDto) {
         User user = checkUser(userId);
@@ -56,14 +57,15 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.map(commentRepository.save(comment));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CommentDto> getCommentsByUser(Long userId) {
         User user = checkUser(userId);
         List<Comment> comments = commentRepository.findByAuthor_Id(user.getId());
         return comments.stream().map(commentMapper::map).collect(Collectors.toList());
-
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Comment getCommentByUserIdAndCommentId(Long userId, Long commentId) {
         checkUser(userId);
@@ -71,6 +73,7 @@ public class CommentServiceImpl implements CommentService {
                 () -> new NotFoundException("Комментарий не найден.", String.format("Комментарий c id=%d  не найден.", commentId)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> getCommentsInEvent(Long eventId, Integer from, Integer size) {
         Event event = checkEvent(eventId);
@@ -78,6 +81,7 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAllByEvent_id(event.getId(), pageRequest);
     }
 
+    @Transactional
     @Override
     public void deleteComment(Long userId, Long commentId) {
         User user = checkUser(userId);
@@ -86,11 +90,13 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(comment);
     }
 
+    @Transactional
     @Override
     public void deleteCommentByAdmin(Long commentId) {
         commentRepository.delete(checkComment(commentId));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> getCommentsByText(String text, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
