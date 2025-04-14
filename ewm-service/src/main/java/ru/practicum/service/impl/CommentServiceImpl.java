@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service("commentService")
+@Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
